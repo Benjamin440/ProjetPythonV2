@@ -6,44 +6,51 @@ import sqlite3
 
 
 ### Ajout User ###
-def add_user(self):
+def add_user():
     print("Ajout d'un utilisateur")
     nom = input("Entrez le nom: ")
-    # if nomvalid.set_nom(nom) == False:
-    #     print("Le nom est invalide")
     prenom = input("Entrez le prénom: ")
-    mat_user = U.gen_mat_user(self) 
     ville = input("Entrez la ville: ")
-    email = U.gen_email(self)
-    login = U.gen_login(self)
-    password = U.gen_password(self)
+    numero = input("Entrez le numéro: ")
     role = input("Entrez le role: ")
-    user = U.User(nom, prenom, mat_user, ville, email, login, password,role)
-    self.U.insertInUser(user)
+    password = input("Entrez le mot de passe: ")
+    matricule = " "
+    user = U(nom, prenom, ville, numero, role, password, matricule)
+    SqlRequest.insertInUser(user)
     print("Utilisateur ajouté")
-    return self.User
+    return user
 
-### Ajout User PHospitalier ###
-def add_user_ph(self):
+### Ajout User PH ###
+def add_user_ph():
     print("Ajout d'un utilisateur")
     nom = input("Entrez le nom: ")
-    # nomValid = User(nom)
-    # if nomValid.set_nom(nom) == False:
-    #     print("Le nom est invalide")
     prenom = input("Entrez le prénom: ")
-    mat_user = U.gen_mat_user(self) 
     ville = input("Entrez la ville: ")
-    email = U.gen_email(self)
-    login = U.gen_login(self)
-    password = U.gen_password(self)
+    numero = input("Entrez le numéro: ")
     role = input("Entrez le role: ")
     service = input("Entrez le service: ")
-    user = U.User(nom, prenom, mat_user, ville, email, login, password,role,service)
-    userph = PH.UserPHospitalier(mat_user,service)
-    self.U.insertInUser(user)
-    self.U.insertInPHospitalier(userph)
+    password = input("Entrez le mot de passe: ")
+    matricule = " "
+    phospitalier = PH(nom, prenom, ville, numero, role, service, password, matricule)
+    SqlRequest.insertInUser(phospitalier)
     print("Utilisateur ajouté")
-    return self.User
+    return phospitalier
+
+### Ajout User Patient ###
+def add_user_patient():
+    print("Ajout d'un utilisateur")
+    nom = input("Entrez le nom: ")
+    prenom = input("Entrez le prénom: ")
+    ville = input("Entrez la ville: ")
+    numero = input("Entrez le numéro: ")
+    role = input("Entrez le role: ")
+    s_social = input("Entrez le service: ")
+    password = input("Entrez le mot de passe: ")
+    matricule = " "
+    patient = P(nom, prenom, ville, numero, role, s_social, password, matricule)
+    SqlRequest.insertInUser(patient)
+    print("Utilisateur ajouté")
+    return patient
 
 # ### Modification User ###
 # def modify_User(self, Etudiant):

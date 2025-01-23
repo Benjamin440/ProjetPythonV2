@@ -5,7 +5,7 @@ def connectdb():
     try:
         cursor = db_conection.cursor()
         print("connection réussi")
-    except:
+    except psycopg2.Error:
         raise ValueError("la connection n'as pas fonctionner")
     return cursor
     

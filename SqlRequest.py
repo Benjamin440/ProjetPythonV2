@@ -1,7 +1,16 @@
-import connectToDb
+import ConnectToDb
 import psycopg2
 
-connect = connectToDb.connectdb()
+connect = ConnectToDb.connectdb()
+
+def countmatricule(table=str):
+    cursor = connect
+    sql = f"SELECT COUNT(matricule) FROM {table};"
+    result = cursor.execute(sql)
+    print("l'execution a été effectué")
+    connect.commit()
+    connect.close()
+    return result
 
 def insertInPHospitalier(table=str, lastname=str,firstname=str, site=str, service=str , matricule=int):
     cursor = connect

@@ -2,18 +2,22 @@ import re
 import secrets
 import string
 import hashlib
+#import SqlRequest as sql
 
 class User(object):
 
-    def __init__ (self, nom, prenom, mat_user, ville, email, login, password, role):
+    def __init__ (self, nom, prenom, ville, numero, role, password, mat_user ):
         self._nom = nom
         self._prenom = prenom
-        self._mat_user = mat_user
         self._ville = ville
-        self.__email = email
-        self.__login = login
-        self.__password = password
+        self._numero = numero
         self._role = role
+        self._email = self.gen_email()
+        self._login = self.gen_login()
+        self.__password = self.hash_password(password)
+        self._mat_user = mat_user
+        mat_user = self.gen_mat_user()
+
 
 ### GESTION NOM ###
     def get_nom(self):
@@ -42,7 +46,9 @@ class User(object):
         return self._mat_user
     
     # def gen_mat_user(self):
-    #     self._Mat_user = 
+    #     self._Mat_user = sql.countmatricule("User")+1
+    def gen_mat_user(self):
+        self._mat_user = 1000
     
     def set_mat_user(self, nouveau_mat_user):
         if nouveau_mat_user == "":
@@ -71,6 +77,10 @@ class User(object):
             else:
                 self._ville = nouvelle_ville
                 print("La ville a été modifié")
+
+### GESTION NUMERO ###
+    def get_numero(self):
+        return self._numero
 
 ### GESTION EMAIL User ###
     def get_email(self):
@@ -107,16 +117,17 @@ class User(object):
 ### GESTION PASSWORD ###
     def get_password(self):
             return self.__password
+    
+    def hash_password(self, password_hash):
+        hashed_password = hashlib.sha256(password_hash.encode()).hexdigest()
+        return hashed_password
 
     def gen_password(self):
         alphabet = string.ascii_letters + string.digits
         password_length = 14
         for _ in range(password_length):
             self.__password =self.__password+ ''.join(secrets.choice(alphabet))
-
-    def hash_password(self, password_hash):
-        hashed_password = hashlib.sha256(password_hash.encode()).hexdigest()
-        return hashed_password
+        self.__password = self.hash_password(self.__password)
 
     def set_password(self, nouveau_password):
             regex = "^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{10,}$"
@@ -156,6 +167,8 @@ class User(object):
         print("Prenom :", self.get_prenom())
         print("Matricule de l'utilisateur :", self.get_mat_user())
         print("Ville :", self.get_ville())
+        print("Numéro de téléphone :", self.get_numero())
+        print("Role :", self.get_role())
         print("-----------------------------")
 
 ### AFFICHAGE USER ###
@@ -169,8 +182,8 @@ class User(object):
 
 ### CREATION DE LA CLASSE PHospitalier ###
 class PHospitalier (User):
-    def __init__(self, nom, prenom, mat_user,ville, email, login, password, service):
-            User.__init__(self, nom, prenom, mat_user, ville, email, login, password)
+    def __init__ (self, nom, prenom, ville, numero, role, service, password, mat_user ):
+            User.__init__(self, nom, prenom, ville, numero, role, password, mat_user)
             self._service = service
 
 ### GESTION SERVICE ###
@@ -197,8 +210,8 @@ class PHospitalier (User):
 
 ### CREATION DE LA CLASSE Patient ###
 class Patient (User):
-    def __init__(self, nom, prenom, mat_user, ville,email, login, password, s_social):
-            User.__init__(self, nom, prenom, mat_user, ville, email, login, password,)
+    def __init__(self, nom, prenom, ville, numero, role, s_social, password, mat_user ):
+            User.__init__(self, nom, prenom, ville, numero, role, password, mat_user)
             self._S_Social = s_social
 
 ### GESTION Sécurité Social ###
@@ -215,18 +228,5 @@ class Patient (User):
 
 
 ## Test de la classe User ##
-user1 = User("LE BERRE", "Benjamin", "44678935","PARIS"," ", " ", " ")
-user1.gen_email()
-user1.gen_login()
-user1.gen_password()
-print(user1.hash_password(user1.get_password()))
+user1 = User("LE BERRE", "Benjamin","PARIS","0626738933","UTILISATEUR","ESGI"," ")
 user1.afficher_user()
-
-
-## Test de la classe PHospitalier ##
-ph1 = PHospitalier("LE BERRE", "Benjamin", "44678935","PARIS"," ", " ", " ", "CARDIOLOGIE")
-ph1.gen_email()
-ph1.gen_login()
-ph1.gen_password()
-print(ph1.hash_password(ph1.get_password()))
-ph1.afficher_user()
