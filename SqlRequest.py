@@ -3,7 +3,7 @@ import psycopg2
 
 connect = connectToDb.connectdb()
 
-def insertInPersonnelHospitalier(table=str, lastname=str,firstname=str, site=str, service=str , matricule=int):
+def insertInPHospitalier(table=str, lastname=str,firstname=str, site=str, service=str , matricule=int):
     cursor = connect
     sql = f"INSERT INTO {table} ({matricule},'{lastname}', '{firstname}', '{site}', '{service}');"
     cursor.execute(sql)
@@ -19,7 +19,7 @@ def insertInUser(table=str,is_admin = bool, is_superAdmin = bool , login = str, 
     connect.commit()
     connect.close()
 
-def modifyInPersonnelHospitalier(table=str, lastname=str,firstname=str, site=str, service=str ,matricule=int):
+def modifyInPHospitalier(table=str, lastname=str,firstname=str, site=str, service=str ,matricule=int):
     cursor = connect
     sql = f"UPDATE INTO {table} ('{lastname}', '{firstname}', '{site}', '{service}') WHERE matricule = {matricule};"
     cursor.execute(sql)
@@ -43,7 +43,7 @@ def deleteInUser(table=str,is_admin = bool, is_superAdmin = bool , login = str, 
     connect.commit()
     connect.close()
 
-def deleteInPersonnelHospitalier(table=str, lastname=str,firstname=str, site=str, service=str ,matricule=int):
+def deleteInPHospitalier(table=str, lastname=str,firstname=str, site=str, service=str ,matricule=int):
     cursor = connect
     sql = f"DELETE INTO {table} ('{lastname}', '{firstname}', '{site}', '{service}') WHERE matricule = {matricule};"
     cursor.execute(sql)
@@ -60,7 +60,7 @@ def selectInUser(table=str, matricule= int):
     connect.close()
     return result
 
-def selectInPersonnelHospitalier(table=str, matricule= int):
+def selectInPHospitalier(table=str, matricule= int):
     cursor = connect
     sql = f"SELECT * FROM {table}  WHERE matricule ={matricule};"
     result = cursor.execute(sql)

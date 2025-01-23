@@ -6,9 +6,9 @@ import hashlib
 class User(object):
 
     def __init__ (self, nom, prenom, mat_user, ville, email, login, password, role):
-        self._Nom = nom
-        self._Prenom = prenom
-        self._Mat_user = mat_user
+        self._nom = nom
+        self._prenom = prenom
+        self._mat_user = mat_user
         self._ville = ville
         self.__email = email
         self.__login = login
@@ -17,35 +17,38 @@ class User(object):
 
 ### GESTION NOM ###
     def get_nom(self):
-        return self._Nom
+        return self._nom
     
     def set_nom(self, nouveau_nom):
         if nouveau_nom == "":
             raise ValueError("Le nom ne peut pas être vide")
         else:
-            self._Nom = nouveau_nom
+            self._nom = nouveau_nom
             print("Le nom a été modifié")
 
 ### GESTION PRENOM ###   
     def get_prenom(self):
-        return self._Prenom
+        return self._prenom
     
     def set_prenom(self, nouveau_prenom):
         if nouveau_prenom == "":
             raise ValueError("Le prénom ne peut pas être vide")
         else:
-            self._Prenom = nouveau_prenom
+            self._prenom = nouveau_prenom
             print("Le prénom a été modifié")
 
 ### GESTION Matricule user ###
     def get_mat_user(self):
-        return self._Mat_user
+        return self._mat_user
+    
+    # def gen_mat_user(self):
+    #     self._Mat_user = 
     
     def set_mat_user(self, nouveau_mat_user):
         if nouveau_mat_user == "":
             raise ValueError("Le matéro étudiant ne peut pas être vide")
         else:
-            self._Mat_user = nouveau_mat_user
+            self._mat_user = nouveau_mat_user
             print("Le matéro étudiant a été modifié")
 
 ### GESTION VILLE ###
@@ -74,7 +77,7 @@ class User(object):
         return self.__email
     
     def gen_email(self):
-        self.__email = self._Prenom[0].lower()+self._Nom.replace(" ", "").lower()+"@americanhospital.fr"
+        self.__email = self._prenom[0].lower()+self._nom.replace(" ", "").lower()+"@americanhospital.fr"
 
     def set_email(self, nouveau_email):
             regex = "^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$"
@@ -92,7 +95,7 @@ class User(object):
             return self.__login
 
     def gen_login(self):
-        self.__login = self._Prenom[0].lower()+self._Nom.replace(" ", "").lower()
+        self.__login = self._prenom[0].lower()+self._nom.replace(" ", "").lower()
 
     def set_login(self, nouveau_login):
             if nouveau_login == "":
@@ -108,12 +111,12 @@ class User(object):
     def gen_password(self):
         alphabet = string.ascii_letters + string.digits
         password_length = 14
-        for i in range(password_length):
+        for _ in range(password_length):
             self.__password =self.__password+ ''.join(secrets.choice(alphabet))
 
-    def hash_password(self, passwordHash):
-        passwordHash = hashlib.sha256().hexdigest()
-        return passwordHash
+    def hash_password(self, password_hash):
+        hashed_password = hashlib.sha256(password_hash.encode()).hexdigest()
+        return hashed_password
 
     def set_password(self, nouveau_password):
             regex = "^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{10,}$"
@@ -156,7 +159,7 @@ class User(object):
         print("-----------------------------")
 
 ### AFFICHAGE USER ###
-    def Afficher_User(self):
+    def afficher_user(self):
         self.afficher()
         print("Email :", self.get_email())
         print("Login :", self.get_login())
@@ -168,11 +171,11 @@ class User(object):
 class PHospitalier (User):
     def __init__(self, nom, prenom, mat_user,ville, email, login, password, service):
             User.__init__(self, nom, prenom, mat_user, ville, email, login, password)
-            self._Service = service
+            self._service = service
 
 ### GESTION SERVICE ###
     def get_service(self):
-        return self._Service
+        return self._service
 
     def set_service(self, nouveau_service):
         liste_service = ["CARDIOLOGIE", "PNEUMOLOGIE","NEUROLOGIE", "REANIMATION", "ANESTHESIE", "URGENCE"]
@@ -217,7 +220,7 @@ user1.gen_email()
 user1.gen_login()
 user1.gen_password()
 print(user1.hash_password(user1.get_password()))
-user1.Afficher_User()
+user1.afficher_user()
 
 
 ## Test de la classe PHospitalier ##
@@ -226,4 +229,4 @@ ph1.gen_email()
 ph1.gen_login()
 ph1.gen_password()
 print(ph1.hash_password(ph1.get_password()))
-ph1.Afficher_User()
+ph1.afficher_user()
