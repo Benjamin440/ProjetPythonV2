@@ -6,7 +6,9 @@ import hashlib
 
 class User(object):
 
-    def __init__ (self, nom, prenom, ville, numero, role, password, mat_user ):
+    def __init__ (self, mat_user, nom, prenom, ville, numero, role, password ):
+        self._mat_user = mat_user
+        mat_user = self.gen_mat_user()
         self._nom = nom
         self._prenom = prenom
         self._ville = ville
@@ -15,8 +17,6 @@ class User(object):
         self._email = self.gen_email()
         self._login = self.gen_login()
         self.__password = self.hash_password(password)
-        self._mat_user = mat_user
-        mat_user = self.gen_mat_user()
 
 
 ### GESTION NOM ###
@@ -227,6 +227,6 @@ class Patient (User):
 
 
 
-## Test de la classe User ##
-user1 = User("LE BERRE", "Benjamin","PARIS","0626738933","UTILISATEUR","ESGI"," ")
-user1.afficher_user()
+# ## Test de la classe User ##
+# user1 = User("LE BERRE", "Benjamin","PARIS","0626738933","UTILISATEUR","ESGI"," ")
+# user1.afficher_user()

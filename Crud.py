@@ -16,41 +16,43 @@ def add_user():
     password = input("Entrez le mot de passe: ")
     matricule = " "
     user = U(nom, prenom, ville, numero, role, password, matricule)
-    SqlRequest.insertInUser(user)
+    SqlRequest.insert_user(user)
     print("Utilisateur ajouté")
     return user
 
-### Ajout User PH ###
-def add_user_ph():
-    print("Ajout d'un utilisateur")
-    nom = input("Entrez le nom: ")
-    prenom = input("Entrez le prénom: ")
-    ville = input("Entrez la ville: ")
-    numero = input("Entrez le numéro: ")
-    role = input("Entrez le role: ")
-    service = input("Entrez le service: ")
-    password = input("Entrez le mot de passe: ")
-    matricule = " "
-    phospitalier = PH(nom, prenom, ville, numero, role, service, password, matricule)
-    SqlRequest.insertInUser(phospitalier)
-    print("Utilisateur ajouté")
-    return phospitalier
+add_user()
 
-### Ajout User Patient ###
-def add_user_patient():
-    print("Ajout d'un utilisateur")
-    nom = input("Entrez le nom: ")
-    prenom = input("Entrez le prénom: ")
-    ville = input("Entrez la ville: ")
-    numero = input("Entrez le numéro: ")
-    role = input("Entrez le role: ")
-    s_social = input("Entrez le service: ")
-    password = input("Entrez le mot de passe: ")
-    matricule = " "
-    patient = P(nom, prenom, ville, numero, role, s_social, password, matricule)
-    SqlRequest.insertInUser(patient)
-    print("Utilisateur ajouté")
-    return patient
+# ### Ajout User PH ###
+# def add_user_ph():
+#     print("Ajout d'un utilisateur")
+#     nom = input("Entrez le nom: ")
+#     prenom = input("Entrez le prénom: ")
+#     ville = input("Entrez la ville: ")
+#     numero = input("Entrez le numéro: ")
+#     role = input("Entrez le role: ")
+#     service = input("Entrez le service: ")
+#     password = input("Entrez le mot de passe: ")
+#     matricule = " "
+#     phospitalier = PH(nom, prenom, ville, numero, role, service, password, matricule)
+#     SqlRequest.insertInUser(phospitalier)
+#     print("Utilisateur ajouté")
+#     return phospitalier
+
+# ### Ajout User Patient ###
+# def add_user_patient():
+#     print("Ajout d'un utilisateur")
+#     nom = input("Entrez le nom: ")
+#     prenom = input("Entrez le prénom: ")
+#     ville = input("Entrez la ville: ")
+#     numero = input("Entrez le numéro: ")
+#     role = input("Entrez le role: ")
+#     s_social = input("Entrez le service: ")
+#     password = input("Entrez le mot de passe: ")
+#     matricule = " "
+#     patient = P(nom, prenom, ville, numero, role, s_social, password, matricule)
+#     SqlRequest.insertInUser(patient)
+#     print("Utilisateur ajouté")
+#     return patient
 
 # ### Modification User ###
 # def modify_User(self, Etudiant):
