@@ -5,7 +5,7 @@ import Crud
 def authent(email, password):
     password = User.hash_password(None, password)
     res = SqlRequest.select_user(email)
-    if password == res[0][7]:
+    if res and password == res[0][7]:
         print("Vous êtes connecté")
         return True
     else:
