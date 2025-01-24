@@ -159,48 +159,39 @@ def modify_user():
                 s_social = input("Entrez le nouveau numéro de sécurité social: ")
                 SqlRequest.update_user(res[0][0], "s_social", s_social)
 
-# ### Menu User ###
-# def menu_User(self):
-#     print("1. Ajout d'un utilisateur")
-#     print("2. Modification d'un utilisateur")
-#     print("3. Suppression d'un utilisateur")
-#     print("4. Affichage d'un utilisateur")
-#     print("5. Affichage de tous les utilisateurs")
-#     print("6. Retour")
-#     choice = input("Entrez votre choix: ")
-#     if choice == "1":
-#         add_User(self)
-#     elif choice == "2":
-#         nom = input("Entrez le nom de l'étudiant: ")
-#         for Etudiant in self.Etudiants:
-#             if Etudiant.get_num_etudiant() == num_etudiant:
-#                 modify_User(self, Etudiant)
-#                 break
-#         else:
-#             print("Utilisateur non trouvé")
-#     elif choice == "3":
-#         nom = input("Entrez le nom de l'étudiant: ")
-#         for Etudiant in self.Etudiants:
-#             if Etudiant.get_num_etudiant() == num_etudiant:
-#                 delete_User(self, Etudiant)
-#                 break
-#         else:
-#             print("Utilisateur non trouvé")
-#     elif choice == "4":
-#         nom = input("Entrez le nom de l'étudiant: ")
-#         for Etudiant in self.Etudiants:
-#             if Etudiant.get_num_etudiant() == num_etudiant:
-#                 afficher_User(self, Etudiant)
-#                 break
-#         else:
-#             print("Utilisateur non trouvé")
-#     elif choice == "5":
-#         afficher_allUser(self)
-#     elif choice == "6":
-#         return
-#     else:
-#         print("Choix invalide")
-#         menu_User(self)
-#     menu_User(self)
+### Menu User ###
+def menu():
+    print("1. Ajouter un utilisateur")
+    print("2. Modifier un utilisateur")
+    print("3. Afficher un utilisateur")
+    print("4. Supprimer un utilisateur")
+    print("5. Quitter")
+    choice = input("Entrez votre choix: ")
+    if choice == "1":
+        print("1. Utilisateur")
+        print("2. Personnel Hospitalier")
+        print("3. Patient")
+        choice = input("Entrez votre choix: ")
+        if choice == "1":
+            add_user()
+        elif choice == "2":
+            add_user_ph()
+        elif choice == "3":
+            add_user_patient()
+        else:
+            print("Choix invalide")
+            menu()
+    elif choice == "2":
+        modify_user()
+    elif choice == "3":
+        afficher_user()
+    elif choice == "4":
+        delete_user()
+    elif choice == "5":
+        print("Au revoir")
+    else:
+        print("Choix invalide")
+        menu()
 
 
+menu()

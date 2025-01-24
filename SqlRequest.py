@@ -9,7 +9,7 @@ EXE_OK = "L'exécution a été effectuée "
 
 def countmatricule():
     cursor = connect[0]
-    sql = """SELECT COUNT(mat_user) FROM utilisateur"""
+    sql = """SELECT mat_user FROM utilisateur ORDER BY mat_user DESC limit 1"""
     cursor.execute(sql)
     res = cursor.fetchall()
     print("l'execution a été effectué")
