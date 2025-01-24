@@ -3,7 +3,7 @@ import Authent
 def main ():
     print("Bienvenue sur le programme d'authentification")
     print("1. Connexion")
-    print("3. Quitter")
+    print("2. Quitter")
     choix = input("Que voulez-vous faire ? ")
 
     if choix == "1":

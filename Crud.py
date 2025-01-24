@@ -180,7 +180,7 @@ def menu_super_admin():
             add_user_patient()
         else:
             print("Choix invalide")
-            menu()
+            menu_super_admin()
     elif choice == "2":
         modify_user()
     elif choice == "3":
