@@ -4,141 +4,160 @@ from User import Patient as P
 import SqlRequest
 import sqlite3
 
+### Constantes ###
+AJOUT_USER = "Ajout d'un utilisateur "
+AJOUT_OK = "Utilisateur ajouté"
+NOM_USER = "Entrez le nom : "
+PRENOM_USER = "Entrez le prénom : "
+VILLE_USER = "Entrez la ville : "
+NUMERO_USER = "Entrez le numéro : "
+ROLE_USER = "Entrez le role : "
+PASSWORD_USER = "Entrez le mot de passe : "
+SERVICE_USER = "Entrez le service : "
+S_SOCIAL_USER = "Entrez le numéro de sécurité social : "
+EMAIL_USER = "Entrez l'email : "
+
 
 ### Ajout User ###
 def add_user():
-    print("Ajout d'un utilisateur")
-    nom = input("Entrez le nom: ")
-    prenom = input("Entrez le prénom: ")
-    ville = input("Entrez la ville: ")
-    numero = input("Entrez le numéro: ")
-    role = input("Entrez le role: ")
-    password = input("Entrez le mot de passe: ")
+    print(AJOUT_USER)
     matricule = " "
-    user = U(nom, prenom, ville, numero, role, password, matricule)
+    nom = input(NOM_USER)
+    prenom = input(PRENOM_USER)
+    ville = input(VILLE_USER)
+    numero = input(NUMERO_USER)
+    role = input(ROLE_USER)
+    password = input(PASSWORD_USER)
+    user = U(matricule,nom, prenom, ville, numero, role, password)
+    user.set_mat_user(SqlRequest.countmatricule()+1)
     SqlRequest.insert_user(user)
-    print("Utilisateur ajouté")
+    print(AJOUT_OK)
     return user
 
-add_user()
+### Ajout User PH ###
+def add_user_ph():
+    print(AJOUT_USER)
+    matricule = " "
+    nom = input(NOM_USER)
+    prenom = input(PRENOM_USER)
+    ville = input(VILLE_USER)
+    numero = input(NUMERO_USER)
+    service = input(SERVICE_USER)
+    role = input(ROLE_USER)
+    password = input(PASSWORD_USER)
+    ph = PH(matricule,nom, prenom, ville, numero, service, role, password)
+    ph.set_mat_user(SqlRequest.countmatricule()+1)
+    SqlRequest.insert_user_ph(ph)
+    print(AJOUT_OK)
+    return ph
 
-# ### Ajout User PH ###
-# def add_user_ph():
-#     print("Ajout d'un utilisateur")
-#     nom = input("Entrez le nom: ")
-#     prenom = input("Entrez le prénom: ")
-#     ville = input("Entrez la ville: ")
-#     numero = input("Entrez le numéro: ")
-#     role = input("Entrez le role: ")
-#     service = input("Entrez le service: ")
-#     password = input("Entrez le mot de passe: ")
-#     matricule = " "
-#     phospitalier = PH(nom, prenom, ville, numero, role, service, password, matricule)
-#     SqlRequest.insertInUser(phospitalier)
-#     print("Utilisateur ajouté")
-#     return phospitalier
+### Ajout User Patient ###
+def add_user_patient():
+    print(AJOUT_USER)
+    matricule = " "
+    nom = input(NOM_USER)
+    prenom = input(PRENOM_USER)
+    ville = input(VILLE_USER)
+    numero = input(NUMERO_USER)
+    s_social = input(S_SOCIAL_USER)
+    role = input(ROLE_USER)
+    password = input(PASSWORD_USER)
+    patient = P(matricule,nom, prenom, ville, numero, s_social, role, password)
+    patient.set_mat_user(SqlRequest.countmatricule()+1)
+    SqlRequest.insert_user_patient(patient)
+    print(AJOUT_OK)
+    return patient
 
-# ### Ajout User Patient ###
-# def add_user_patient():
-#     print("Ajout d'un utilisateur")
-#     nom = input("Entrez le nom: ")
-#     prenom = input("Entrez le prénom: ")
-#     ville = input("Entrez la ville: ")
-#     numero = input("Entrez le numéro: ")
-#     role = input("Entrez le role: ")
-#     s_social = input("Entrez le service: ")
-#     password = input("Entrez le mot de passe: ")
-#     matricule = " "
-#     patient = P(nom, prenom, ville, numero, role, s_social, password, matricule)
-#     SqlRequest.insertInUser(patient)
-#     print("Utilisateur ajouté")
-#     return patient
+### Affichage User ###
+def afficher_user():
+    email = input(EMAIL_USER)
+    res = SqlRequest.select_user(email)
+    if res:
+        print("Utilisateur trouvé")
+        print("Nom: ", res[0][1])
+        print("Prénom: ", res[0][2])
+        print("Matricule: ", res[0][0])
+        print("Ville: ", res[0][3])
+        print("Numéro: ", res[0][4])
+        print("Email: ", res[0][5])
+        print("Login: ", res[0][6])
+        print("Role: ", res[0][8])
+        if res[0][10] is not None:
+            print("Service: ", res[0][10])
+        elif res[0][9] is not None:
+            print("Numéro de sécurité social: ", res[0][9])
+    else:
+        print("Utilisateur non trouvé")
 
-# ### Modification User ###
-# def modify_User(self, Etudiant):
-#     print("Modification de l'utilisateur")
-#     print("1. Nom")
-#     print("2. Prénom")
-#     print("3. Numéro d'étudiant")
-#     print("4. Année d'étude")
-#     print("5. Filière")
-#     print("6. Classe")
-#     print("7. Absences")
-#     print("8. Email")
-#     print("9. login")
-#     print("10. Password")
-#     print("11. Retour")
-#     choice = input("Entrez votre choix: ")
-#     if choice == "1":
-#         Etudiant.set_nom(input("Entrez le nouveau nom: "))
-#     elif choice == "2":
-#         Etudiant.set_prenom(input("Entrez le nouveau prénom: "))
-#     elif choice == "3":
-#         Etudiant.set_num_etudiant(input("Entrez le nouveau numéro d'étudiant: "))
-#     elif choice == "4":
-#         Etudiant.set_aScolaire(input("Entrez la nouvelle année d'étude: "))
-#     elif choice == "5":
-#         Etudiant.set_filière(input("Entrez la nouvelle filière: "))
-#     elif choice == "6":
-#         Etudiant.set_classe(input("Entrez la nouvelle classe: "))
-#     elif choice == "7":
-#         Etudiant.set_absence(input("Entrez le nouveau nombre d'absences: "))
-#     elif choice == "8":
-#         Etudiant.set_email(input("Entrez le nouvel email: "))
-#     elif choice == "9":
-#         Etudiant.set_login(input("Entrez le nouveau login: "))
-#     elif choice == "10":
-#         Etudiant.set_password(input("Entrez le nouveau mot de passe: "))
-#     elif choice == "11":
-#         modify_User(self, Etudiant)
+### Suppression User ###
+def delete_user():
+    email = input(EMAIL_USER)
+    res = SqlRequest.select_user(email)
+    if res:
+        print("1. Oui")
+        print("2. Non")
+        choice = input("Entrez votre choix: ")
+        if choice == "1":
+            SqlRequest.delete_user(res[0][0])
+            print("Utilisateur supprimé")
+        elif choice == "2":
+            print("Suppression annulée")
+        else:
+            print("Choix invalide")
+            delete_user()
+    else:
+        print("Utilisateur non trouvé")
 
-# ### Suppression User ###
-# def delete_User(self, Etudiant):
-#     print("Suppression de l'utilisateur")
-#     print("1. Oui")
-#     print("2. Non")
-#     choice = input("Entrez votre choix: ")
-#     if choice == "1":
-#         self.Etudiants.remove(Etudiant)
-#         print("Utilisateur supprimé")
-#     elif choice == "2":
-#         print("Suppression annulée")
-#     else:
-#         print("Choix invalide")
-#         delete_User(self, Etudiant)
-#     return self.Etudiants
-
-# ### Affichage User ###
-# def afficher_User(self, Etudiant):
-#     print("--------------------")
-#     print("Affichage de l'utilisateur")
-#     print("Nom: ", Etudiant.get_nom())
-#     print("Prénom: ", Etudiant.get_prenom())
-#     print("Numéro d'étudiant: ", Etudiant.get_num_etudiant())
-#     print("Année d'étude: ", Etudiant.get_aScolaire())
-#     print("Filière: ", Etudiant.get_filière())
-#     print("Classe: ", Etudiant.get_classe())
-#     print("Absences: ", Etudiant.get_absence())
-#     print("Email: ", Etudiant.get_email())
-#     print("Login: ", Etudiant.get_login())
-#     print("--------------------")
-
-
-# def afficher_allUser(self):
-#     print("--------------------")
-#     print("Affichage de tous les utilisateurs")
-#     for Etudiant in self.Etudiants:
-#         print("Nom: ", Etudiant.get_nom())
-#         print("Prénom: ", Etudiant.get_prenom())
-#         print("Numéro d'étudiant: ", Etudiant.get_num_etudiant())
-#         print("Année d'étude: ", Etudiant.get_aScolaire())
-#         print("Filière: ", Etudiant.get_filière())
-#         print("Classe: ", Etudiant.get_classe())
-#         print("Absences: ", Etudiant.get_absence())
-#         print("Email: ", Etudiant.get_email())
-#         print("Login: ", Etudiant.get_login())
-#         print("--------------------")
-
+def modify_user():
+    email = input(EMAIL_USER)
+    res = SqlRequest.select_user(email)
+    if res:
+        print("Modification de l'utilisateur")
+        print("1. Nom")
+        print("2. Prénom")
+        print("3. Ville")
+        print("4. Numéro")
+        print("5. Email")
+        print("6. Login")
+        print("7. Password")
+        print("8. Role")
+        if res[0][10] is not None:
+            print("9. Service")
+        elif res[0][9] is not None:
+            print("9. Numéro de sécurité social")
+        print("10. Retour")
+        choice = input("Entrez votre choix: ")
+        if choice == "1":
+            nom = input("Entrez le nouveau nom: ")
+            SqlRequest.update_user(res[0][0], "nom", nom)
+        elif choice == "2":
+            prenom = input("Entrez le nouveau prénom: ")
+            SqlRequest.update_user(res[0][0], "prenom", prenom)
+        elif choice == "3":
+            ville = input("Entrez la nouvelle ville: ")
+            SqlRequest.update_user(res[0][0], "ville", ville)
+        elif choice == "4":
+            numero = input("Entrez le nouveau numéro: ")
+            SqlRequest.update_user(res[0][0], "numero", numero)
+        elif choice == "5":
+            email = input("Entrez le nouvel email: ")
+            SqlRequest.update_user(res[0][0], "email", email)
+        elif choice == "6":
+            login = input("Entrez le nouveau login: ")
+            SqlRequest.update_user(res[0][0], "login", login)
+        elif choice == "7":
+            password = input("Entrez le nouveau mot de passe: ")
+            SqlRequest.update_user(res[0][0], "password", password)
+        elif choice == "8":
+            role = input("Entrez le nouveau role: ")
+            SqlRequest.update_user(res[0][0], "role", role)
+        elif choice == "9":
+            if res[0][10] is not None:
+                service = input("Entrez le nouveau service: ")
+                SqlRequest.update_user(res[0][0], "service", service)
+            elif res[0][9] is not None:
+                s_social = input("Entrez le nouveau numéro de sécurité social: ")
+                SqlRequest.update_user(res[0][0], "s_social", s_social)
 
 # ### Menu User ###
 # def menu_User(self):

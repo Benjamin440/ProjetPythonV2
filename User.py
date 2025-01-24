@@ -2,13 +2,11 @@ import re
 import secrets
 import string
 import hashlib
-#import SqlRequest as sql
 
 class User(object):
 
     def __init__ (self, mat_user, nom, prenom, ville, numero, role, password ):
         self._mat_user = mat_user
-        mat_user = self.gen_mat_user()
         self._nom = nom
         self._prenom = prenom
         self._ville = ville
@@ -45,17 +43,12 @@ class User(object):
     def get_mat_user(self):
         return self._mat_user
     
-    # def gen_mat_user(self):
-    #     self._Mat_user = sql.countmatricule("User")+1
-    def gen_mat_user(self):
-        self._mat_user = 1000
-    
     def set_mat_user(self, nouveau_mat_user):
         if nouveau_mat_user == "":
-            raise ValueError("Le matéro étudiant ne peut pas être vide")
+            raise ValueError("Le matricule ne peut pas être vide")
         else:
             self._mat_user = nouveau_mat_user
-            print("Le matéro étudiant a été modifié")
+            print("Le matricule étudiant a été modifié")
 
 ### GESTION VILLE ###
     def get_ville(self):
@@ -215,10 +208,10 @@ class Patient (User):
             self._S_Social = s_social
 
 ### GESTION Sécurité Social ###
-    def get_service(self):
+    def get_s_social(self):
         return self._S_Social
 
-    def set_service(self, nouveau_s_social):
+    def set_social(self, nouveau_s_social):
         if nouveau_s_social == "":
             raise ValueError("Le service ne peut pas être vide")
         else:
