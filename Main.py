@@ -13,3 +13,5 @@ def main ():
     elif choix == "2":
         print("Au revoir")
         exit()
+
+main()
