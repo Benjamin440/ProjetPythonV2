@@ -160,7 +160,7 @@ def modify_user():
                 SqlRequest.update_user(res[0][0], "s_social", s_social)
 
 ### Menu User ###
-def menu():
+def menu_super_admin():
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
     print("3. Afficher un utilisateur")
@@ -191,7 +191,46 @@ def menu():
         print("Au revoir")
     else:
         print("Choix invalide")
-        menu()
+        menu_super_admin()
 
+def menu_admin():
+    print("1. Ajouter un utilisateur")
+    print("2. Modifier un utilisateur")
+    print("3. Afficher un utilisateur")
+    print("4. Quitter")
+    choice = input("Entrez votre choix: ")
+    if choice == "1":
+        print("1. Utilisateur")
+        print("2. Personnel Hospitalier")
+        print("3. Patient")
+        choice = input("Entrez votre choix: ")
+        if choice == "1":
+            add_user()
+        elif choice == "2":
+            add_user_ph()
+        elif choice == "3":
+            add_user_patient()
+        else:
+            print("Choix invalide")
+            menu()
+    elif choice == "2":
+        modify_user()
+    elif choice == "3":
+        afficher_user()
+    elif choice == "5":
+        print("Au revoir")
+    else:
+        print("Choix invalide")
+        menu_admin()
 
-menu()
+def menu_utilisateur():
+    print("1. Afficher mes informations")
+    print("2. Quitter")
+    choice = input("Entrez votre choix: ")
+    if choice == "1":
+        afficher_user()
+    elif choice == "2":
+        print("Au revoir")
+    else:
+        print("Choix invalide")
+        menu_admin()
