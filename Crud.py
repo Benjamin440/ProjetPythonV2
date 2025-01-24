@@ -212,7 +212,7 @@ def menu_admin():
             add_user_patient()
         else:
             print("Choix invalide")
-            menu()
+            menu_admin()
     elif choice == "2":
         modify_user()
     elif choice == "3":
@@ -233,4 +233,4 @@ def menu_utilisateur():
         print("Au revoir")
     else:
         print("Choix invalide")
-        menu_admin()
+        menu_utilisateur()
