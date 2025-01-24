@@ -68,6 +68,14 @@ def select_user(email):
     print(EXE_OK)
     return res
 
+def select_ville(ville):
+    cursor = connect[0]
+    sql = """SELECT * FROM utilisateur WHERE ville = %s"""
+    cursor.execute(sql, (ville,))
+    res = cursor.fetchall()
+    print(EXE_OK)
+    return res
+
 
 def close():
     connect[0].close()
