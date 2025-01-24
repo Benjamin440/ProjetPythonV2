@@ -1,10 +1,10 @@
-
 import sys
 import os
 import getpass
 import re
 import SqlRequest
 from User import User
+import Crud
 
 
 def authent(email, password):
@@ -21,18 +21,9 @@ def authent(email, password):
 
 def verify_role(email):
     res = SqlRequest.select_user(email)
-    if res[0][8] == "utilisateur":
-        return True
-    elif res[0][8] == "admin":
-        return True
+    if res[0][8] == "UTILISATEUR":
+        Crud.menu_utilisateur()
+    elif res[0][8] == "ADMIN":
+        Crud.menu_admin()
     else:
-        return False
-
-
-
-    
-
-
-    
-
-    
+        Crud.menu_super_admin()
