@@ -22,7 +22,7 @@ def verify_role(email):
         Crud.menu_super_admin()
 
 def verify_ville(ville):
-    res2 = SqlRequest.select_user(ville)
+    res2 = SqlRequest.select_ville(ville)
     if ville == "":
         raise ValueError("La ville ne peut pas être vide")
     elif ville != res2[0][3]:
