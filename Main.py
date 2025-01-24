@@ -10,11 +10,7 @@ def main ():
         email = input("Entrez votre email: ")
         password = input("Entrez votre mot de passe: ")
         Authent.authent(email, password)
-        if Authent.verify_role(email):
-            Crud.menu()
-        else:
-            print("Vous n'avez pas les droits pour accéder à cette page")
-
+        Authent.verify_role(email)
     elif choix == "2":
         print("Au revoir")
         exit()
