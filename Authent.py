@@ -1,7 +1,3 @@
-import sys
-import os
-import getpass
-import re
 import SqlRequest
 from User import User
 import Crud

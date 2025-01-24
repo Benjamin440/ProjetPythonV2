@@ -2,7 +2,6 @@ from User import User as U
 from User import PHospitalier as PH
 from User import Patient as P
 import SqlRequest
-import sqlite3
 
 ### Constantes ###
 AJOUT_USER = "Ajout d'un utilisateur "
