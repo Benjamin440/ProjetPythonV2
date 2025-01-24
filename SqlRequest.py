@@ -68,5 +68,6 @@ def select_user(email):
     print(EXE_OK)
     return res
 
+
 def close():
     connect[0].close()
