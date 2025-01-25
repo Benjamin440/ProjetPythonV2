@@ -21,14 +21,11 @@ def verify_role(email):
     else:
         Crud.menu_super_admin()
 
-# def verify_ville(ville):
-#     res2 = SqlRequest.select_ville(ville)
-#     if ville == "":
-#         raise ValueError("La ville ne peut pas être vide")
-#     elif ville != res2[0][4]:
-#         raise ValueError("La ville n'est pas valide")
-#     else:
-#         return ville
-    
-
-# verify_ville("PARIS")
+def verify_ville(ville):
+    res2 = SqlRequest.select_ville(ville)
+    if ville == "":
+        raise ValueError("La ville ne peut pas être vide")
+    elif ville != res2[0][3]:
+        raise ValueError("La ville n'est pas valide")
+    else:
+        return ville
