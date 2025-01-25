@@ -22,10 +22,22 @@ def verify_role(login):
         Crud.menu_super_admin()
 
 def verify_ville(ville):
-    res2 = SqlRequest.select_ville(ville)
-    if ville == "":
+    villes_autorisees = {"PARIS", "RENNES", "STRASBOURG", "GRENOBLE", "NANTES"}
+    if not ville:
         raise ValueError("La ville ne peut pas être vide")
-    elif ville != res2[0][3]:
-        raise ValueError("La ville n'est pas valide")
-    else:
-        return ville
+    if ville.upper() not in villes_autorisees:
+        raise ValueError("La ville doit être parmi les suivantes : PARIS, RENNES, STRASBOURG, GRENOBLE, NANTES")
+    return ville.upper()
+
+def afficher_user_ville(ville):
+    try:
+        ville = verify_ville(ville)
+        res2 = SqlRequest.select_ville(ville)
+        if not res2:
+            print(f"Aucun utilisateur trouvé pour la ville {ville}.")
+            return
+        print(f"Liste des utilisateurs pour la ville {ville} :")
+        for row in res2:
+            print(row) 
+    except ValueError as e:
+        print(f"Erreur : {e}")
