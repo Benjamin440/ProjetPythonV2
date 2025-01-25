@@ -2,6 +2,7 @@ import re
 import secrets
 import string
 import hashlib
+from datetime import datetime, timedelta
 
 class User(object):
 
@@ -15,6 +16,7 @@ class User(object):
         self._email = self.gen_email()
         self._login = self.gen_login()
         self.__password = self.hash_password(password)
+        self.password_expiry = self.set_password_expiry()
 
 
 ### GESTION NOM ###
@@ -130,6 +132,9 @@ class User(object):
                 self.__password = nouveau_password
             else : 
                 raise ValueError("Le mot de passe n'est pas valide")
+            
+    def set_password_expiry(self, days_valid=90):
+        return datetime.now() + timedelta(days=days_valid)
             
 ### GESTION DU ROLE ###
     def get_role(self):

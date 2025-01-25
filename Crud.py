@@ -160,6 +160,7 @@ def modify_user():
 
 ### Menu User ###
 def menu_super_admin():
+    print("--- Menu Super Admin ---")
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
     print("3. Afficher un utilisateur")
@@ -170,6 +171,7 @@ def menu_super_admin():
         print("1. Utilisateur")
         print("2. Personnel Hospitalier")
         print("3. Patient")
+        print("4. Retour Menu")
         choice = input("Entrez votre choix: ")
         if choice == "1":
             add_user()
@@ -177,6 +179,8 @@ def menu_super_admin():
             add_user_ph()
         elif choice == "3":
             add_user_patient()
+        elif choice == "4":
+            print("Au revoir")
         else:
             print("Choix invalide")
             menu_super_admin()
@@ -193,22 +197,23 @@ def menu_super_admin():
         menu_super_admin()
 
 def menu_admin():
+    print("--- Menu Admin ---")
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
     print("3. Afficher un utilisateur")
     print("4. Quitter")
     choice = input("Entrez votre choix: ")
     if choice == "1":
-        print("1. Utilisateur")
-        print("2. Personnel Hospitalier")
-        print("3. Patient")
+        print("1. Personnel Hospitalier")
+        print("2. Patient")
+        print("3. Retour Menu")
         choice = input("Entrez votre choix: ")
         if choice == "1":
-            add_user()
-        elif choice == "2":
             add_user_ph()
-        elif choice == "3":
+        elif choice == "2":
             add_user_patient()
+        elif choice == "3":
+            print("Au revoir")
         else:
             print("Choix invalide")
             menu_admin()
@@ -223,6 +228,7 @@ def menu_admin():
         menu_admin()
 
 def menu_utilisateur():
+    print("--- Menu Utilisateur ---")
     print("1. Afficher mes informations")
     print("2. Quitter")
     choice = input("Entrez votre choix: ")
