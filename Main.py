@@ -7,10 +7,12 @@ def main ():
     choix = input("Que voulez-vous faire ? ")
 
     if choix == "1":
-        email = input("Entrez votre email: ")
+        login = input("Entrez votre login: ")
         password = input("Entrez votre mot de passe: ")
-        Authent.authent(email, password)
-        Authent.verify_role(email)
+        if Authent.authent(login, password) == True:
+            Authent.verify_role(login)
+        else:
+            main()
     elif choix == "2":
         print("Au revoir")
         exit()

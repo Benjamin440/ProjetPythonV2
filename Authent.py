@@ -2,9 +2,9 @@ import SqlRequest
 from User import User
 import Crud
 
-def authent(email, password):
+def authent(login, password):
     password = User.hash_password(None, password)
-    res = SqlRequest.select_user(email)
+    res = SqlRequest.select_user(login)
     if res and password == res[0][7]:
         print("Vous êtes connecté")
         return True
@@ -12,8 +12,8 @@ def authent(email, password):
         print("Mauvais nom d'utilisateur ou mot de passe")
         return False
 
-def verify_role(email):
-    res = SqlRequest.select_user(email) 
+def verify_role(login):
+    res = SqlRequest.select_user(login) 
     if res[0][8] == "UTILISATEUR":
         Crud.menu_utilisateur()
     elif res[0][8] == "ADMIN":

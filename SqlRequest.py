@@ -60,12 +60,11 @@ def delete_user(matricule):
     print(EXE_OK)
     connect[1].commit()
 
-def select_user(email):
+def select_user(login):
     cursor = connect[0]
-    sql = """SELECT * FROM utilisateur WHERE email = %s"""
-    cursor.execute(sql, (email,))
+    sql = """SELECT * FROM utilisateur WHERE login = %s"""
+    cursor.execute(sql, (login,))
     res = cursor.fetchall()
-    print(EXE_OK)
     return res
 
 def select_ville(ville):
@@ -73,7 +72,6 @@ def select_ville(ville):
     sql = """SELECT * FROM utilisateur WHERE ville = %s"""
     cursor.execute(sql, (ville,))
     res = cursor.fetchall()
-    print(EXE_OK)
     return res
 
 
