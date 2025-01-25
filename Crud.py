@@ -8,7 +8,7 @@ AJOUT_USER = "Ajout d'un utilisateur "
 AJOUT_OK = "Utilisateur ajouté"
 NOM_USER = "Entrez le nom : "
 PRENOM_USER = "Entrez le prénom : "
-VILLE_USER = "Entrez la ville : "
+VILLE_USER = "Choissisez une ville PARIS | RENNES | STRASBOURG | GRENOBLE | NANTES : "
 NUMERO_USER = "Entrez le numéro : "
 ROLE_USER = "Entrez le role : "
 PASSWORD_USER = "Entrez le mot de passe : "
@@ -21,9 +21,9 @@ EMAIL_USER = "Entrez l'email : "
 def add_user():
     print(AJOUT_USER)
     matricule = " "
-    nom = input(NOM_USER)
+    nom = input(NOM_USER).upper()
     prenom = input(PRENOM_USER)
-    ville = input(VILLE_USER)
+    ville = input(VILLE_USER).upper()
     numero = input(NUMERO_USER)
     role = input(ROLE_USER)
     password = input(PASSWORD_USER)
@@ -34,40 +34,83 @@ def add_user():
     return user
 
 ### Ajout User PH ###
-def add_user_ph():
+def add_user_ph(admin_ville):
+    villes_autorisees = {"PARIS", "RENNES", "STRASBOURG", "GRENOBLE", "NANTES"}
+    if admin_ville.upper() not in villes_autorisees:
+        print("Vous n'avez pas l'autorisation de créer des utilisateurs pour cette ville.")
+        return None
     print(AJOUT_USER)
     matricule = " "
-    nom = input(NOM_USER)
+    nom = input(NOM_USER).upper()
     prenom = input(PRENOM_USER)
-    ville = input(VILLE_USER)
+    # Si l'admin est de Paris, il peut choisir la ville, sinon il est limité à sa propre ville
+    if admin_ville.upper()== "PARIS":
+        ville = input(VILLE_USER).upper()  # Admin de Paris peut choisir la ville
+        if ville not in villes_autorisees:
+            print(f"Vous ne pouvez créer des utilisateurs que pour les villes suivantes : {', '.join(villes_autorisees)}.")
+            return None
+    else:
+        ville = admin_ville.upper()  # Admin des autres villes est restreint à sa propre ville
     numero = input(NUMERO_USER)
     service = input(SERVICE_USER)
-    role = input(ROLE_USER)
+    role = "UTILISATEUR"
     password = input(PASSWORD_USER)
-    ph = PH(matricule,nom, prenom, ville, numero, service, role, password)
-    ph.set_mat_user(SqlRequest.countmatricule()+1)
+    ph = PH(matricule, nom, prenom, ville, numero, service, role, password)
+    ph.set_mat_user(SqlRequest.countmatricule() + 1)
     SqlRequest.insert_user_ph(ph)
     print(AJOUT_OK)
     return ph
 
 ### Ajout User Patient ###
-def add_user_patient():
+def add_user_patient(admin_ville):
+    villes_autorisees = {"PARIS", "RENNES", "STRASBOURG", "GRENOBLE", "NANTES"}
+    if admin_ville.upper() not in villes_autorisees:
+        print("Vous n'avez pas l'autorisation de créer des utilisateurs pour cette ville.")
+        return None
     print(AJOUT_USER)
     matricule = " "
-    nom = input(NOM_USER)
+    nom = input(NOM_USER).upper()
     prenom = input(PRENOM_USER)
-    ville = input(VILLE_USER)
+    # Si l'admin est de Paris, il peut choisir la ville, sinon il est limité à sa propre ville
+    if admin_ville.upper() == "PARIS":
+        ville = input(VILLE_USER).upper()  # Admin de Paris peut choisir la ville
+        if ville not in villes_autorisees:
+            print(f"Vous ne pouvez créer des utilisateurs que pour les villes suivantes : {', '.join(villes_autorisees)}.")
+            return None
+    else:
+        ville = admin_ville.upper()  # Admin des autres villes est restreint à sa propre ville
     numero = input(NUMERO_USER)
     s_social = input(S_SOCIAL_USER)
-    role = input(ROLE_USER)
+    role = "UTILISATEUR"
     password = input(PASSWORD_USER)
     patient = P(matricule,nom, prenom, ville, numero, s_social, role, password)
-    patient.set_mat_user(SqlRequest.countmatricule()+1)
+    patient.set_mat_user(SqlRequest.countmatricule() + 1)
     SqlRequest.insert_user_patient(patient)
     print(AJOUT_OK)
     return patient
 
+def verify_ville(ville):
+    villes_autorisees = {"PARIS", "RENNES", "STRASBOURG", "GRENOBLE", "NANTES"}
+    if not ville:
+        raise ValueError("La ville ne peut pas être vide")
+    if ville.upper() not in villes_autorisees:
+        raise ValueError("La ville doit être parmi les suivantes : PARIS, RENNES, STRASBOURG, GRENOBLE, NANTES")
+    return ville.upper()
+
 ### Affichage User ###
+def afficher_user_ville(ville):
+    try:
+        ville = verify_ville(ville)
+        res2 = SqlRequest.select_ville(ville)
+        if not res2:
+            print(f"Aucun utilisateur trouvé pour la ville {ville}.")
+            return
+        print(f"Liste des utilisateurs pour la ville {ville} :")
+        for row in res2:
+            print(row) 
+    except ValueError as e:
+        print(f"Erreur : {e}")
+
 def afficher_user():
     email = input(EMAIL_USER)
     res = SqlRequest.select_user(email)
@@ -107,6 +150,7 @@ def delete_user():
     else:
         print("Utilisateur non trouvé")
 
+### Modification User ###
 def modify_user():
     email = input(EMAIL_USER)
     res = SqlRequest.select_user(email)
@@ -159,7 +203,7 @@ def modify_user():
                 SqlRequest.update_user(res[0][0], "s_social", s_social)
 
 ### Menu User ###
-def menu_super_admin():
+def menu_super_admin(ville):
     print("--- Menu Super Admin ---")
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
@@ -176,9 +220,9 @@ def menu_super_admin():
         if choice == "1":
             add_user()
         elif choice == "2":
-            add_user_ph()
+            add_user_ph(ville)
         elif choice == "3":
-            add_user_patient()
+            add_user_patient(ville)
         elif choice == "4":
             print("Au revoir")
         else:
@@ -196,7 +240,7 @@ def menu_super_admin():
         print("Choix invalide")
         menu_super_admin()
 
-def menu_admin():
+def menu_admin(ville):
     print("--- Menu Admin ---")
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
@@ -209,9 +253,9 @@ def menu_admin():
         print("3. Retour Menu")
         choice = input("Entrez votre choix: ")
         if choice == "1":
-            add_user_ph()
+            add_user_ph(ville)
         elif choice == "2":
-            add_user_patient()
+            add_user_patient(ville)
         elif choice == "3":
             print("Au revoir")
         else:
@@ -220,7 +264,7 @@ def menu_admin():
     elif choice == "2":
         modify_user()
     elif choice == "3":
-        afficher_user()
+        afficher_user_ville(ville)
     elif choice == "5":
         print("Au revoir")
     else:

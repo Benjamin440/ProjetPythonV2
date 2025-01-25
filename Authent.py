@@ -14,18 +14,12 @@ def authent(login, password):
 
 def verify_role(login):
     res = SqlRequest.select_user(login) 
+    ville = res[0][3]
     if res[0][8] == "UTILISATEUR":
         Crud.menu_utilisateur()
     elif res[0][8] == "ADMIN":
-        Crud.menu_admin()
+        Crud.menu_admin(ville)
     else:
-        Crud.menu_super_admin()
+        Crud.menu_super_admin(ville)
 
-def verify_ville(ville):
-    res2 = SqlRequest.select_ville(ville)
-    if ville == "":
-        raise ValueError("La ville ne peut pas être vide")
-    elif ville != res2[0][3]:
-        raise ValueError("La ville n'est pas valide")
-    else:
-        return ville
+
