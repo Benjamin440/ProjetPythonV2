@@ -14,7 +14,7 @@ ROLE_USER = "Entrez le role : "
 PASSWORD_USER = "Entrez le mot de passe : "
 SERVICE_USER = "Entrez le service : "
 S_SOCIAL_USER = "Entrez le numéro de sécurité social : "
-EMAIL_USER = "Entrez l'email : "
+LOGIN_USER = "Entrez le login : "
 
 
 ### Ajout User ###
@@ -112,8 +112,8 @@ def afficher_user_ville(ville):
         print(f"Erreur : {e}")
 
 def afficher_user():
-    email = input(EMAIL_USER)
-    res = SqlRequest.select_user(email)
+    login = input(LOGIN_USER)
+    res = SqlRequest.select_user(login)
     if res:
         print("Utilisateur trouvé")
         print("Nom: ", res[0][1])
@@ -133,8 +133,8 @@ def afficher_user():
 
 ### Suppression User ###
 def delete_user():
-    email = input(EMAIL_USER)
-    res = SqlRequest.select_user(email)
+    login = input(LOGIN_USER)
+    res = SqlRequest.select_user(login)
     if res:
         print("1. Oui")
         print("2. Non")
@@ -152,8 +152,8 @@ def delete_user():
 
 ### Modification User ###
 def modify_user():
-    email = input(EMAIL_USER)
-    res = SqlRequest.select_user(email)
+    login = input(LOGIN_USER)
+    res = SqlRequest.select_user(login)
     if res:
         print("Modification de l'utilisateur")
         print("1. Nom")
