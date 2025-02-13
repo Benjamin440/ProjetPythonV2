@@ -1,6 +1,6 @@
 import ConnectToDb
 from User import User
-from User import PHospitalier as PH
+from User import PHospitalier
 from User import Patient
 
 connect = ConnectToDb.connectdb()

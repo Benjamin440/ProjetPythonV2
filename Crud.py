@@ -157,7 +157,7 @@ def afficher_user_service(service):
     service = input(SERVICE_USER)
     res = SqlRequest.select_service(service)
     if res:
-        Print("Utilisateur trouvé")
+        print("Utilisateur trouvé")
         print("Nom: ", res[0][1])
         print("Prénom: ", res[0][2])
     else:
@@ -263,7 +263,7 @@ def menu_super_admin(ville):
     elif choice == "2":
         modify_user()
     elif choice == "3":
-        afficher_user()
+        afficher_user_service()
     elif choice == "4":
         delete_user()
     elif choice == "5":
