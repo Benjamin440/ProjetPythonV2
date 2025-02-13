@@ -229,8 +229,9 @@ def menu_super_admin(ville):
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
     print("3. Afficher un utilisateur")
-    print("4. Supprimer un utilisateur")
-    print("5. Quitter")
+    print("4. Afficher un utilisateur via le service")
+    print("5. Supprimer un utilisateur")
+    print("6. Quitter")
     choice = input("Entrez votre choix: ")
     if choice == "1":
         print("1. Utilisateur")
@@ -252,10 +253,12 @@ def menu_super_admin(ville):
     elif choice == "2":
         modify_user()
     elif choice == "3":
-        afficher_user_service(input("Entrez le service : "))
+        afficher_user()
     elif choice == "4":
-        delete_user()
+        afficher_user_service(input("Entrez le service : "))
     elif choice == "5":
+        delete_user()
+    elif choice == "6":
         print("Au revoir")
     else:
         print("Choix invalide")
