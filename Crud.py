@@ -152,17 +152,6 @@ def afficher_user():
     else:
         print("Utilisateur non trouvé")
 
-
-def afficher_user_service(service):
-    service = input(SERVICE_USER)
-    res = SqlRequest.select_service(service)
-    if res:
-        print("Utilisateur trouvé")
-        print("Nom: ", res[0][1])
-        print("Prénom: ", res[0][2])
-    else:
-        print("Utilisateur non trouvé")
-
 ### Suppression User ###
 def delete_user():
     login = input(LOGIN_USER)
