@@ -252,7 +252,7 @@ def menu_super_admin(ville):
     elif choice == "2":
         modify_user()
     elif choice == "3":
-        afficher_user_service()
+        afficher_user_service(input("Entrez le service : "))
     elif choice == "4":
         delete_user()
     elif choice == "5":

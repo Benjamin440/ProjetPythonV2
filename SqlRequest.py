@@ -76,7 +76,7 @@ def select_ville(ville):
 
 def select_service(service):
     cursor = connect[0]
-    sql = """SELECT * FROM utilisateur WHERE service = %s"""
+    sql = """SELECT nom,prenom FROM utilisateur WHERE service = %s"""
     cursor.execute(sql, (service,))
     res = cursor.fetchall()
     return res
