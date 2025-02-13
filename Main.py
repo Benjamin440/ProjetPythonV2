@@ -1,5 +1,6 @@
 import Crud
 import Authent
+import getpass
 def main ():
     print("Bienvenue sur le programme d'authentification")
     print("1. Connexion")
@@ -8,7 +9,7 @@ def main ():
 
     if choix == "1":
         login = input("Entrez votre login: ")
-        password = input("Entrez votre mot de passe: ")
+        password = getpass.getpass("Entrez votre mot de passe: ")
         if Authent.authent(login, password) == True:
             Authent.verify_role(login)
         else:
