@@ -97,6 +97,14 @@ def verify_ville(ville):
         raise ValueError("La ville doit être parmi les suivantes : PARIS, RENNES, STRASBOURG, GRENOBLE, NANTES")
     return ville.upper()
 
+def verify_service(service):
+    service_autorisees = {"URGENCE", "NEUROLOGIE", "CARDIOLOGIE"}
+    if not service:
+        raise ValueError("Le service ne peut pas être vide")
+    if service.upper() not in service_autorisees:
+        raise ValueError("Le service doit être parmi les suivants : URGENCE, NEUROLOGIE, CARDIOLOG")
+    return service
+
 ### Affichage User ###
 def afficher_user_ville(ville):
     try:
@@ -108,6 +116,19 @@ def afficher_user_ville(ville):
         print(f"Liste des utilisateurs pour la ville {ville} :")
         for row in res2:
             print(row) 
+    except ValueError as e:
+        print(f"Erreur : {e}")
+
+def afficher_user_service(service):
+    try:
+        service = verify_service(service)
+        res2 = SqlRequest.select_service(service)
+        if not res2:
+            print(f"Aucun utilisateur trouvé pour le service {service}.")
+            return
+        print(f"Liste des utilisateurs pour le service {service} :")
+        for row in res2:
+            print(row)
     except ValueError as e:
         print(f"Erreur : {e}")
 
@@ -128,6 +149,17 @@ def afficher_user():
             print("Service: ", res[0][10])
         elif res[0][9] is not None:
             print("Numéro de sécurité social: ", res[0][9])
+    else:
+        print("Utilisateur non trouvé")
+
+
+def afficher_user_service(service):
+    service = input(SERVICE_USER)
+    res = SqlRequest.select_service(service)
+    if res:
+        Print("Utilisateur trouvé")
+        print("Nom: ", res[0][1])
+        print("Prénom: ", res[0][2])
     else:
         print("Utilisateur non trouvé")
 

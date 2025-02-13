@@ -1,6 +1,6 @@
 import ConnectToDb
 from User import User
-from User import PHospitalier
+from User import PHospitalier as PH
 from User import Patient
 
 connect = ConnectToDb.connectdb()
@@ -71,6 +71,13 @@ def select_ville(ville):
     cursor = connect[0]
     sql = """SELECT * FROM utilisateur WHERE ville = %s"""
     cursor.execute(sql, (ville,))
+    res = cursor.fetchall()
+    return res
+
+def select_service(service):
+    cursor = connect[0]
+    sql = """SELECT * FROM utilisateur WHERE service = %s"""
+    cursor.execute(sql, (service,))
     res = cursor.fetchall()
     return res
 
