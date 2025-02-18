@@ -85,7 +85,7 @@ class User(object):
         self.__email = self._prenom[0].lower()+self._nom.replace(" ", "").lower()+"@americanhospital.fr"
 
     def set_email(self, nouveau_email):
-            regex = "^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$"
+            regex = r"^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$"
             if nouveau_email == "":
                 ("L'email ne peut pas être vide")
             else:
@@ -125,7 +125,7 @@ class User(object):
         self.__password = self.hash_password(self.__password)
 
     def set_password(self, nouveau_password):
-            regex = "^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{10,}$"
+            regex = r"^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{10,}$"
             if nouveau_password == "":
                 raise ValueError("Le mot de passe ne peut pas être vide")
             elif re.search(regex, nouveau_password):
