@@ -67,16 +67,23 @@ def select_user(login):
     res = cursor.fetchall()
     return res
 
+def select_user2(login):
+    cursor = connect[0]
+    sql = """SELECT nom,prenom,ville,numero,email,role,s_social,service FROM utilisateur WHERE login = %s"""
+    cursor.execute(sql, (login,))
+    res = cursor.fetchall()
+    return res
+
 def select_ville(ville):
     cursor = connect[0]
-    sql = """SELECT * FROM utilisateur WHERE ville = %s"""
+    sql = """SELECT nom,prenom,ville,numero,email,role, FROM utilisateur WHERE ville = %s"""
     cursor.execute(sql, (ville,))
     res = cursor.fetchall()
     return res
 
 def select_service(service):
     cursor = connect[0]
-    sql = """SELECT nom,prenom FROM utilisateur WHERE service = %s"""
+    sql = """SELECT nom,prenom,ville FROM utilisateur WHERE service = %s"""
     cursor.execute(sql, (service,))
     res = cursor.fetchall()
     return res

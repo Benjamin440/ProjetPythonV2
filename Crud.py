@@ -9,7 +9,7 @@ AJOUT_OK = "Utilisateur ajouté"
 NOM_USER = "Entrez le nom : "
 PRENOM_USER = "Entrez le prénom : "
 VILLE_USER = "Choissisez une ville PARIS | RENNES | STRASBOURG | GRENOBLE | NANTES : "
-NUMERO_USER = "Entrez le numéro : "
+NUMERO_USER = "Entrez le numéro de téléphone: "
 ROLE_USER = "Entrez le role : "
 PASSWORD_USER = "Entrez le mot de passe : "
 SERVICE_USER = "Entrez le service : "
@@ -134,21 +134,19 @@ def afficher_user_service(service):
 
 def afficher_user():
     login = input(LOGIN_USER)
-    res = SqlRequest.select_user(login)
+    res = SqlRequest.select_user2(login)
     if res:
         print("Utilisateur trouvé")
-        print("Nom: ", res[0][1])
-        print("Prénom: ", res[0][2])
-        print("Matricule: ", res[0][0])
-        print("Ville: ", res[0][3])
-        print("Numéro: ", res[0][4])
-        print("Email: ", res[0][5])
-        print("Login: ", res[0][6])
-        print("Role: ", res[0][8])
-        if res[0][10] is not None:
-            print("Service: ", res[0][10])
-        elif res[0][9] is not None:
-            print("Numéro de sécurité social: ", res[0][9])
+        print("Nom: ", res[0][0])
+        print("Prénom: ", res[0][1])
+        print("Ville: ", res[0][2])
+        print("Numéro: ", res[0][3])
+        print("Email: ", res[0][4])
+        print("Role: ", res[0][5])
+        if res[0][7] is not None:
+            print("Service: ", res[0][7])
+        elif res[0][6] is not None:
+            print("Numéro de sécurité social: ", res[0][6])
     else:
         print("Utilisateur non trouvé")
 

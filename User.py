@@ -15,11 +15,14 @@ class User(object):
         self._role = role
         self._email = self.gen_email()
         self._login = self.gen_login()
+        ##self.__password = self.gen_password() 
+        ##self.__password = self.hash_password(password)
         self.__password = self.hash_password(password)
         self.password_expiry = self.set_password_expiry()
 
 
 ### GESTION NOM ###
+
     def get_nom(self):
         return self._nom
     
@@ -50,7 +53,7 @@ class User(object):
             raise ValueError("Le matricule ne peut pas être vide")
         else:
             self._mat_user = nouveau_mat_user
-            print("Le matricule étudiant a été modifié")
+            print("Le matricule de l'utilisateur a été modifié")
 
 ### GESTION VILLE ###
     def get_ville(self):
@@ -76,6 +79,17 @@ class User(object):
 ### GESTION NUMERO ###
     def get_numero(self):
         return self._numero
+    
+    def set_numero(self, nouveau_numero):
+        regex = r"^0[1-9]([-]?[0-9]{2}){4}$"
+        if nouveau_numero == "":
+            raise ValueError("Le numéro ne peut pas être vide")
+        else:
+            if not re.match(regex, nouveau_numero):
+                raise ValueError("Le numéro n'est pas valide")
+            else:
+                self._numero = nouveau_numero
+                print("Le numéro de téléphone a été modifié")
 
 ### GESTION EMAIL User ###
     def get_email(self):
