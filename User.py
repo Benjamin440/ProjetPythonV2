@@ -15,8 +15,8 @@ class User(object):
         self._role = role
         self._email = self.gen_email()
         self._login = self.gen_login()
-        ##self.__password = self.gen_password() 
-        ##self.__password = self.hash_password(password)
+        ##self.__password = self.gen_password() ## A décommenter pour générer un mot de passe aléatoire
+        ##self.__password = self.hash_password(password) ## A décommenter pour hasher le mot de passe
         self.__password = self.hash_password(password)
         self.password_expiry = self.set_password_expiry()
 

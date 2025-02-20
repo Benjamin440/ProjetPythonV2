@@ -134,7 +134,7 @@ def afficher_user_service(service):
 
 def afficher_user():
     login = input(LOGIN_USER)
-    res = SqlRequest.select_user2(login)
+    res = SqlRequest.select_user2(login) ## Récupération des informations de l'utilisateur via la requete SQL
     if res:
         print("Utilisateur trouvé")
         print("Nom: ", res[0][0])
@@ -159,7 +159,7 @@ def delete_user():
         print("2. Non")
         choice = input("Entrez votre choix: ")
         if choice == "1":
-            SqlRequest.delete_user(res[0][0])
+            SqlRequest.delete_user(res[0][0]) ## Suppression de l'utilisateur via la requete SQL
             print("Utilisateur supprimé")
         elif choice == "2":
             print("Suppression annulée")
@@ -275,14 +275,14 @@ def menu_admin(ville):
         print("3. Retour Menu")
         choice = input("Entrez votre choix: ")
         if choice == "1":
-            add_user_ph(ville)
+            add_user_ph(ville) ## Ajout d'un utilisateur PH
         elif choice == "2":
-            add_user_patient(ville)
+            add_user_patient(ville) ## Ajout d'un patient
         elif choice == "3":
             print("Au revoir")
         else:
             print("Choix invalide")
-            menu_admin()
+            menu_admin() ## Retour au menu admin
     elif choice == "2":
         modify_user()
     elif choice == "3":
