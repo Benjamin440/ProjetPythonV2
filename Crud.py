@@ -2,16 +2,16 @@ from User import User as U
 from User import PHospitalier as PH
 from User import Patient as P
 import SqlRequest
+import re
 
 ### Constantes ###
-AJOUT_USER = "Ajout d'un utilisateur "
+AJOUT_USER = "Ajout d'un Utilisateur"
 AJOUT_OK = "Utilisateur ajouté"
 NOM_USER = "Entrez le nom : "
 PRENOM_USER = "Entrez le prénom : "
 VILLE_USER = "Choissisez une ville PARIS | RENNES | STRASBOURG | GRENOBLE | NANTES : "
 NUMERO_USER = "Entrez le numéro de téléphone: "
 ROLE_USER = "Entrez le role : "
-PASSWORD_USER = "Entrez le mot de passe : "
 SERVICE_USER = "Entrez le service : "
 S_SOCIAL_USER = "Entrez le numéro de sécurité social : "
 LOGIN_USER = "Entrez le login : "
@@ -20,15 +20,28 @@ LOGIN_USER = "Entrez le login : "
 ### Ajout User ###
 def add_user():
     print(AJOUT_USER)
-    matricule = " "
     nom = input(NOM_USER).upper()
     prenom = input(PRENOM_USER)
     ville = input(VILLE_USER).upper()
     numero = input(NUMERO_USER)
     role = input(ROLE_USER)
-    password = input(PASSWORD_USER)
-    user = U(matricule,nom, prenom, ville, numero, role, password)
-    user.set_mat_user(SqlRequest.countmatricule()+1)
+    user = U(" ", nom, prenom, ville, numero, role, "", "", "", "")
+
+    # Génération de l'email et du login
+    user.gen_email()
+    user.gen_login()
+    # Génération du mot de passe
+    passwordv = user.gen_password()
+    if not passwordv:
+        raise ValueError("Erreur : le mot de passe généré est vide ou None")
+    hashed_password = user.hash_password(passwordv)
+    if not hashed_password:
+        raise ValueError("Erreur : le hashage du mot de passe a échoué")
+    # Stockage du mot de passe hashé et du mot de passe en clair
+    user.set_password(hashed_password)
+    user.set_password_clear(passwordv)
+    # Attribution du matricule et insertion en base
+    user.set_mat_user(SqlRequest.countmatricule() + 1)
     SqlRequest.insert_user(user)
     print(AJOUT_OK)
     return user
@@ -44,7 +57,7 @@ def add_user_ph(admin_ville):
     nom = input(NOM_USER).upper()
     prenom = input(PRENOM_USER)
     # Si l'admin est de Paris, il peut choisir la ville, sinon il est limité à sa propre ville
-    if admin_ville.upper()== "PARIS":
+    if admin_ville.upper() == "PARIS":
         ville = input(VILLE_USER).upper()  # Admin de Paris peut choisir la ville
         if ville not in villes_autorisees:
             print(f"Vous ne pouvez créer des utilisateurs que pour les villes suivantes : {', '.join(villes_autorisees)}.")
@@ -53,9 +66,23 @@ def add_user_ph(admin_ville):
         ville = admin_ville.upper()  # Admin des autres villes est restreint à sa propre ville
     numero = input(NUMERO_USER)
     service = input(SERVICE_USER)
-    role = "UTILISATEUR"
-    password = input(PASSWORD_USER)
-    ph = PH(matricule, nom, prenom, ville, numero, service, role, password)
+    ph = PH(matricule, nom, prenom, ville, numero, "UTILISATEUR",service , "", "", "", "" )
+
+    # Génération de l'email et du login
+    ph.gen_email()
+    ph.gen_login()
+
+    # Génération du mot de passe
+    passwordv = ph.gen_password()
+    if not passwordv:
+        raise ValueError("Erreur : le mot de passe généré est vide ou None")
+    hashed_password = ph.hash_password(passwordv)
+    if not hashed_password:
+        raise ValueError("Erreur : le hashage du mot de passe a échoué")
+    # Stockage du mot de passe hashé et du mot de passe en clair
+    ph.set_password(hashed_password)
+    ph.set_password_clear(passwordv)
+    
     ph.set_mat_user(SqlRequest.countmatricule() + 1)
     SqlRequest.insert_user_ph(ph)
     print(AJOUT_OK)
@@ -267,7 +294,8 @@ def menu_admin(ville):
     print("1. Ajouter un utilisateur")
     print("2. Modifier un utilisateur")
     print("3. Afficher un utilisateur")
-    print("4. Quitter")
+    print ("4. Supprimer un utilisateur")
+    print("5. Quitter")
     choice = input("Entrez votre choix: ")
     if choice == "1":
         print("1. Personnel Hospitalier")
@@ -287,6 +315,8 @@ def menu_admin(ville):
         modify_user()
     elif choice == "3":
         afficher_user_ville(ville)
+    elif choice == "4":
+        delete_user()
     elif choice == "5":
         print("Au revoir")
     else:

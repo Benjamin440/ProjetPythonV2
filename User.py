@@ -3,22 +3,22 @@ import secrets
 import string
 import hashlib
 from datetime import datetime, timedelta
+import re
 
 class User(object):
 
-    def __init__ (self, mat_user, nom, prenom, ville, numero, role, password ):
+    def __init__ (self, mat_user, nom, prenom, ville, numero, role, email, login, password, passwordclear ):
         self._mat_user = mat_user
         self._nom = nom
         self._prenom = prenom
         self._ville = ville
         self._numero = numero
         self._role = role
-        self._email = self.gen_email()
-        self._login = self.gen_login()
-        ##self.__password = self.gen_password() ## A décommenter pour générer un mot de passe aléatoire
-        ##self.__password = self.hash_password(password) ## A décommenter pour hasher le mot de passe
-        self.__password = self.hash_password(password)
-        self.password_expiry = self.set_password_expiry()
+        self._email = email
+        self._login = login
+        self.__password = password## A décommenter pour générer un mot de passe aléatoire
+        self.__passwordclear = passwordclear
+        #self.password_expiry = self.set_password_expiry()
 
 
 ### GESTION NOM ###
@@ -124,29 +124,41 @@ class User(object):
                 print("Le login a été modifié")
 
 ### GESTION PASSWORD ###
+    def get_password_clear(self):
+            return self.__passwordclear
+    
+    def set_password_clear(self, nouveau_password):
+            if nouveau_password == "":
+                raise ValueError("Le mot de passe ne peut pas être vide")
+            else:
+                self.__passwordclear = nouveau_password
+                print("Le mot de passe a été modifié")
+
     def get_password(self):
             return self.__password
     
-    def hash_password(self, password_hash):
-        hashed_password = hashlib.sha256(password_hash.encode()).hexdigest()
-        return hashed_password
+    def hash_password(self, password):
+        if not password:
+            raise ValueError("Le mot de passe fourni pour le hachage est vide ou None")
+        return hashlib.sha256(password.encode()).hexdigest()
 
     def gen_password(self):
-        alphabet = string.ascii_letters + string.digits
+        caractere = string.ascii_letters + string.digits + string.punctuation
         password_length = 14
-        for _ in range(password_length):
-            self.__password =self.__password+ ''.join(secrets.choice(alphabet))
-        self.__password = self.hash_password(self.__password)
+        self.__password = ''.join(secrets.choice(caractere) for _ in range(password_length))
+        return self.__password
 
     def set_password(self, nouveau_password):
-            regex = r"^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{10,}$"
-            if nouveau_password == "":
-                raise ValueError("Le mot de passe ne peut pas être vide")
-            elif re.search(regex, nouveau_password):
-                self.__password = nouveau_password
-            else : 
-                raise ValueError("Le mot de passe n'est pas valide")
-            
+        regex = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$"  # Vérifie un mot de passe brut (min. 10 caractères, lettres et chiffres)
+        # Vérification si c'est un mot de passe haché (64 caractères hexadécimaux de SHA-256)
+        if re.fullmatch(r"^[a-fA-F0-9]{64}$", nouveau_password):
+            self.__password = nouveau_password  # Stocke directement le hash
+        elif re.fullmatch(regex, nouveau_password):
+            self.__password = nouveau_password  # Stocke un mot de passe brut (utile si on ne hash pas encore)
+        else:
+            raise ValueError("Le mot de passe n'est pas valide (il doit contenir au moins 10 caractères, avec des lettres et chiffres)")
+    
+    
     def set_password_expiry(self, days_valid=90):
         return datetime.now() + timedelta(days=days_valid)
             
@@ -193,37 +205,28 @@ class User(object):
 
 
 ### CREATION DE LA CLASSE PHospitalier ###
-class PHospitalier (User):
-    def __init__ (self, nom, prenom, ville, numero, role, service, password, mat_user ):
-            User.__init__(self, nom, prenom, ville, numero, role, password, mat_user)
-            self._service = service
+class PHospitalier(User):
+    def __init__(self, mat_user, nom, prenom, ville, numero, role, email, login, password, passwordclear, service):
+        super().__init__(mat_user, nom, prenom, ville, numero, role, email, login, password, passwordclear)
+        self._service = service  # Stockage correct du service        
 
 ### GESTION SERVICE ###
     def get_service(self):
         return self._service
 
     def set_service(self, nouveau_service):
-        liste_service = ["CARDIOLOGIE", "PNEUMOLOGIE","NEUROLOGIE", "REANIMATION", "ANESTHESIE", "URGENCE"]
-        if nouveau_service == "":
-            raise ValueError("La service ne peut pas être vide")
-        else:
-            for i in liste_service :
-                if nouveau_service.upper() != i:
-                    resultat = False
-                else:
-                    resultat = True
-                    break
-            if resultat == False:
-                raise ValueError("La service n'est pas dans la liste")
-            else:
-                self._service = nouveau_service
-                print("La service a été modifié")
-    
+        liste_service = ["CARDIOLOGIE", "PNEUMOLOGIE", "NEUROLOGIE", "REANIMATION", "ANESTHESIE", "URGENCE"]
+        if not nouveau_service:
+            raise ValueError("Le service ne peut pas être vide")
+        if nouveau_service.upper() not in liste_service:
+            raise ValueError("Le service n'est pas dans la liste des services autorisés")
+        self._service = nouveau_service.upper()
+        print("Le service a été modifié :", self._service)
 
 ### CREATION DE LA CLASSE Patient ###
 class Patient (User):
-    def __init__(self, nom, prenom, ville, numero, role, s_social, password, mat_user ):
-            User.__init__(self, nom, prenom, ville, numero, role, password, mat_user)
+    def __init__(self, nom, prenom, ville, numero, role, email, login, s_social, password, passwordclear, mat_user ):
+            super().__init__(self, nom, prenom, ville, numero, role, email, login, password, passwordclear, mat_user)
             self._S_Social = s_social
 
 ### GESTION Sécurité Social ###

@@ -18,27 +18,27 @@ def countmatricule():
 def insert_user(user=User):
     cursor = connect[0]
     sql = """
-    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role()))
+    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role, passwordv) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role(), user.get_password_clear()))
     print(EXE_OK)
     connect[1].commit()
 
 def insert_user_ph(user=PHospitalier):
     cursor = connect[0]
     sql = """
-    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role, service) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role(), user.get_service()))
+    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role, service, passwordv) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role(), user.get_service(), user.get_password_clear()))
     print(EXE_OK)
     connect[1].commit()
 
 def insert_user_patient(user=Patient):
     cursor = connect[0]
     sql = """
-    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role, s_social) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role(), user.get_s_social()))
+    INSERT INTO utilisateur (mat_user, nom, prenom, ville, numero, email, login, password, role, s_social, passwordv) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(sql, (user.get_mat_user(), user.get_nom(), user.get_prenom(), user.get_ville(), user.get_numero(), user.get_email(), user.get_login(), user.get_password(), user.get_role(), user.get_s_social(), user.get_password_clear()))
     print(EXE_OK)
     connect[1].commit()
 
@@ -76,7 +76,7 @@ def select_user2(login):
 
 def select_ville(ville):
     cursor = connect[0]
-    sql = """SELECT nom,prenom,ville,numero,email,role, FROM utilisateur WHERE ville = %s"""
+    sql = """SELECT nom,prenom,ville,numero,email,role FROM utilisateur WHERE ville = %s"""
     cursor.execute(sql, (ville,))
     res = cursor.fetchall()
     return res
